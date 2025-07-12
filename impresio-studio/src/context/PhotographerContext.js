@@ -7,6 +7,7 @@ export const PhotographerProvider = ({ children }) => {
   const [filteredPhotographers, setFilteredPhotographers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const [filters, setFilters] = useState({
     priceRange: [0, 20000],
     minRating: 0,
@@ -19,14 +20,15 @@ export const PhotographerProvider = ({ children }) => {
   useEffect(() => {
     const fetchPhotographers = async () => {
       try {
-        const response = await fetch('http://localhost:3001/photographers');
-        if (!response.ok) throw new Error('Network response was not ok');
-        const data = await response.json();
+        const res = await fetch('http://localhost:3001/photographers');
+        if (!res.ok) throw new Error('Failed to fetch photographers');
+        const data = await res.json();
+
         setPhotographers(data);
         setFilteredPhotographers(data);
-        setLoading(false);
       } catch (err) {
         setError(err.message);
+      } finally {
         setLoading(false);
       }
     };
@@ -34,71 +36,77 @@ export const PhotographerProvider = ({ children }) => {
     fetchPhotographers();
   }, []);
 
+
   useEffect(() => {
+    const applyFilters = () => {
+      let result = [...photographers];
+
+      if (filters.searchQuery) {
+        const query = filters.searchQuery.toLowerCase();
+        result = result.filter(p =>
+          p.name.toLowerCase().includes(query) ||
+          p.location.toLowerCase().includes(query) ||
+          p.tags.some(tag => tag.toLowerCase().includes(query))
+        );
+      }
+
+      if (filters.city) {
+        result = result.filter(p =>
+          p.location.toLowerCase() === filters.city.toLowerCase()
+        );
+      }
+
+      result = result.filter(p =>
+        p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
+      );
+
+  
+      if (filters.minRating > 0) {
+        result = result.filter(p => p.rating >= filters.minRating);
+      }
+
+    
+      if (filters.styles.length > 0) {
+        result = result.filter(p =>
+          filters.styles.some(style => p.styles.includes(style))
+        );
+      }
+
+      switch (filters.sortBy) {
+        case 'price-asc':
+          result.sort((a, b) => a.price - b.price);
+          break;
+        case 'price-desc':
+          result.sort((a, b) => b.price - a.price);
+          break;
+        case 'rating-desc':
+          result.sort((a, b) => b.rating - a.rating);
+          break;
+        case 'recent':
+          result.sort((a, b) => b.id - a.id);
+          break;
+        default:
+          break;
+      }
+
+      setFilteredPhotographers(result);
+    };
+
     applyFilters();
   }, [filters, photographers]);
-
-  const applyFilters = () => {
-    let result = [...photographers];
-
-    // Apply search filter
-    if (filters.searchQuery) {
-      const query = filters.searchQuery.toLowerCase();
-      result = result.filter(photographer => 
-        photographer.name.toLowerCase().includes(query) ||
-        photographer.location.toLowerCase().includes(query) ||
-        photographer.tags.some(tag => tag.toLowerCase().includes(query))
-      );
-    }
-
-    // Apply city filter
-    if (filters.city) {
-      result = result.filter(p => p.location.toLowerCase() === filters.city.toLowerCase());
-    }
-
-    // Apply price range filter
-    result = result.filter(p => 
-      p.price >= filters.priceRange[0] && p.price <= filters.priceRange[1]
-    );
-
-    // Apply rating filter
-    if (filters.minRating > 0) {
-      result = result.filter(p => p.rating >= filters.minRating);
-    }
-
-    // Apply style filter
-    if (filters.styles.length > 0) {
-      result = result.filter(p => 
-        filters.styles.some(style => p.styles.includes(style))
-      );
-    }
-
-    // Apply sorting
-    if (filters.sortBy === 'price-asc') {
-      result.sort((a, b) => a.price - b.price);
-    } else if (filters.sortBy === 'price-desc') {
-      result.sort((a, b) => b.price - a.price);
-    } else if (filters.sortBy === 'rating-desc') {
-      result.sort((a, b) => b.rating - a.rating);
-    } else if (filters.sortBy === 'recent') {
-      result.sort((a, b) => b.id - a.id);
-    }
-
-    setFilteredPhotographers(result);
-  };
 
   const updateFilters = (newFilters) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
   return (
-    <PhotographerContext.Provider 
-      value={{ 
-        photographers: filteredPhotographers, 
-        loading, 
-        error, 
-        filters, 
-        updateFilters 
+    <PhotographerContext.Provider
+      value={{
+        photographers: filteredPhotographers,
+        loading,
+        error,
+        filters,
+        updateFilters
       }}
     >
       {children}
