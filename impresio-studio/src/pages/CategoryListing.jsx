@@ -12,7 +12,7 @@ const CategoryListing = () => {
   const [visiblePhotographers, setVisiblePhotographers] = useState(6);
   const [showSmartSuggestion, setShowSmartSuggestion] = useState(false);
 
-  // Show smart suggestion banner after 2 seconds
+
   useEffect(() => {
     const timer = setTimeout(() => setShowSmartSuggestion(true), 2000);
     return () => clearTimeout(timer);
@@ -40,35 +40,35 @@ const CategoryListing = () => {
     }`;
   };
 
-  // Error state
+ 
   if (error) {
     return <div className="py-10 text-center text-red-500">Error: {error}</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Title */}
+ 
       <h1 className="mb-6 text-3xl font-bold">
         Maternity Photographers in {filters.city || 'Bengaluru'}
       </h1>
 
-      {/* Smart Suggestion */}
+  
       {showSmartSuggestion && (
         <div className="mb-6 rounded-lg bg-purple-100 p-4 text-purple-800">
           <p className="font-medium">💡 Smart Suggestion: {getSmartSuggestion()}</p>
         </div>
       )}
 
-      {/* Search Bar */}
+      
       <SearchBar />
 
       <div className="flex flex-col gap-8 lg:flex-row">
-        {/* Filter Sidebar */}
+  
         <div className="lg:w-1/4">
           <FilterSidebar />
         </div>
 
-        {/* Photographer Cards */}
+      
         <div className="lg:w-3/4">
           {loading ? (
             <SkeletonLoader />
@@ -85,7 +85,7 @@ const CategoryListing = () => {
                   ))}
               </div>
 
-              {/* Load More Button */}
+           
               {visiblePhotographers < photographers.length && (
                 <div className="mt-8 text-center">
                   <button
