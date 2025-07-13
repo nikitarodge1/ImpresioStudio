@@ -20,7 +20,7 @@ export const PhotographerProvider = ({ children }) => {
   useEffect(() => {
     const fetchPhotographers = async () => {
       try {
-        const res = await fetch('http://localhost:3001/photographers');
+        const res = await fetch('https://impresio-json-api-git-main-nikita-rodges-projects.vercel.app/photographers');
         if (!res.ok) throw new Error('Failed to fetch photographers');
         const data = await res.json();
 
