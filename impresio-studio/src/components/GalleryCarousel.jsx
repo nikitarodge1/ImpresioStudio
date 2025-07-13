@@ -3,24 +3,23 @@ import { useState } from 'react';
 const GalleryCarousel = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Go to next image
+ 
   const nextSlide = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
 
-  // Go to previous image
+ 
   const prevSlide = () => {
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
-  // Jump to specific image
   const goToSlide = (index) => {
     setCurrentIndex(index);
   };
 
   return (
     <div className="relative w-full">
-      {/* Carousel Images */}
+     
       <div className="overflow-hidden rounded-lg">
         <div
           className="flex transition-transform duration-300"
@@ -38,7 +37,7 @@ const GalleryCarousel = ({ images }) => {
         </div>
       </div>
 
-      {/* Prev Button */}
+     
       <button
         onClick={prevSlide}
         className="absolute left-2 top-1/2 -translate-y-1/2 transform bg-black bg-opacity-50 text-white p-2 rounded-full"
@@ -47,7 +46,7 @@ const GalleryCarousel = ({ images }) => {
         &lt;
       </button>
 
-      {/* Next Button */}
+   
       <button
         onClick={nextSlide}
         className="absolute right-2 top-1/2 -translate-y-1/2 transform bg-black bg-opacity-50 text-white p-2 rounded-full"
@@ -56,7 +55,6 @@ const GalleryCarousel = ({ images }) => {
         &gt;
       </button>
 
-      {/* Dots Indicator */}
       <div className="flex justify-center mt-2 space-x-2">
         {images.map((_, index) => (
           <button

@@ -6,7 +6,7 @@ const FilterSidebar = () => {
   const cities = ['Bengaluru', 'Delhi', 'Mumbai', 'Hyderabad'];
   const styles = ['Traditional', 'Candid', 'Studio', 'Outdoor', 'Indoor'];
 
-  // Toggle style selection
+  
   const handleStyleToggle = (style) => {
     const updatedStyles = filters.styles.includes(style)
       ? filters.styles.filter(s => s !== style)
@@ -19,7 +19,7 @@ const FilterSidebar = () => {
     <aside className="w-64 p-4 bg-white rounded-lg shadow-md sticky top-4 h-fit">
       <h2 className="text-xl font-bold mb-4">Filters</h2>
 
-      {/* Price Range Filter */}
+      
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Price Range</h3>
         <input
@@ -41,7 +41,7 @@ const FilterSidebar = () => {
         </div>
       </div>
 
-      {/* Rating Filter */}
+  
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Minimum Rating</h3>
         <div className="flex flex-wrap gap-2">
@@ -65,7 +65,7 @@ const FilterSidebar = () => {
         </div>
       </div>
 
-      {/* City Dropdown */}
+      
       <div className="mb-6">
         <h3 className="font-semibold mb-2">City</h3>
         <select
@@ -82,7 +82,7 @@ const FilterSidebar = () => {
         </select>
       </div>
 
-      {/* Style Checkboxes */}
+
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Styles</h3>
         <div className="space-y-2">
@@ -100,7 +100,7 @@ const FilterSidebar = () => {
         </div>
       </div>
 
-      {/* Sort Dropdown */}
+  
       <div>
         <h3 className="font-semibold mb-2">Sort By</h3>
         <select

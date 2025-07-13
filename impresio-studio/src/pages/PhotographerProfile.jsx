@@ -14,7 +14,7 @@ const PhotographerProfile = () => {
   useEffect(() => {
     const fetchPhotographer = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/photographers/${id}`);
+        const response = await fetch(`https://impresio-json-api-git-main-nikita-rodges-projects.vercel.app/photographers/${id}`);
         if (!response.ok) throw new Error('Photographer not found');
         const data = await response.json();
         setPhotographer(data);
